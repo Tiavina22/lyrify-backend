@@ -37,6 +37,21 @@ func NormalizeString(s string) string {
 		s = re.ReplaceAllString(s, " ")
 	}
 
+	// Remove video/audio metadata in parentheses
+	videoPatterns := []string{
+		`\s*\(?official\s+(video|audio|music\s+video)\)?`,
+		`\s*\(?clip\s+officiel\)?`,
+		`\s*\(?video\s+officiel\)?`,
+		`\s*\(?lyric\s+video\)?`,
+		`\s*\(?audio\s+officiel\)?`,
+		`\s*\(?visualizer\)?`,
+		`\s*\(?lyrics\)?`,
+	}
+	for _, pattern := range videoPatterns {
+		re := regexp.MustCompile(pattern)
+		s = re.ReplaceAllString(s, " ")
+	}
+
 	// Remove all special characters except spaces
 	re := regexp.MustCompile(`[^a-z0-9\s]`)
 	s = re.ReplaceAllString(s, " ")
