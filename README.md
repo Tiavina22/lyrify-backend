@@ -203,7 +203,7 @@ Content-Type: application/json
 }
 ```
 
-## 🔧 Configuration
+## Configuration
 
 ### Variables d'Environnement
 
