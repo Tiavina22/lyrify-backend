@@ -2,10 +2,12 @@ package main
 
 import (
 	"log"
+	"time"
 
 	"github.com/gin-gonic/gin"
 
 	"github.com/Tiavina22/lyrify-backend/internal/config"
+	"github.com/Tiavina22/lyrify-backend/internal/features/song"
 	"github.com/Tiavina22/lyrify-backend/internal/services"
 )
 
@@ -17,8 +19,7 @@ func main() {
 	// Connect database
 	db := services.NewDatabase(cfg.DatabaseURL)
 
-	_ = db // will be use later when we add handlers and repositories
-
+	// Initialize Gin
 	r := gin.New()
 
 	// Middlewares
@@ -28,10 +29,23 @@ func main() {
 	// Health check
 	r.GET("/health", func(c *gin.Context) {
 		c.JSON(200, gin.H{
-			"status": "ok",
+			"status":    "ok",
+			"timestamp": time.Now().Format(time.RFC3339),
 		})
 	})
 
-	log.Printf("Lyrify backend running on :%s", cfg.Port)
+	// Register API routes
+	api := r.Group("/api/v1")
+	{
+		// Song feature routes
+		songHandler := song.NewHandler(db)
+		songHandler.RegisterRoutes(api)
+	}
+
+	log.Printf("✓ Server started successfully")
+	log.Printf("✓ Listening on port %s", cfg.Port)
+	log.Printf("✓ Health check: http://localhost:%s/health", cfg.Port)
+	log.Printf("✓ API endpoints: http://localhost:%s/api/v1", cfg.Port)
+
 	r.Run(":" + cfg.Port)
 }
