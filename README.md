@@ -316,9 +316,9 @@ Backend ne trouve rien
 - [x] Utilities (normalisation, validation)
 - [x] Service de matching
 - [x] Migrations automatiques
-- [ ] Handler POST /match
-- [ ] Handler GET /lyrics/:id
-- [ ] Tests d'intégration
+- [X] Handler POST /match
+- [X] Handler GET /lyrics/:id
+- [X] Tests d'intégration
 
 ### Phase 2 - Features Avancées
 - [ ] Repository pattern (abstraction data access)
